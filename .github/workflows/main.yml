@@ -21,6 +21,6 @@ jobs:
 
       - name: Run container
         run: |
-          docker run -d --name my-node-app -p 3000:3000 mydockerhubusername/my-node-app:latest
+          docker run -d --name my-node-app -p 3000:3000 pingchili/cpsy-350-ci:latest
           sleep 5 # wait for server to start
           curl http://localhost:3000
