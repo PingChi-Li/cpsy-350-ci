@@ -1,19 +1,26 @@
+name: Run Node.js App from Docker Hub
 
-# Use official Node.js image
-FROM node:18
+on:
+  workflow_dispatch: # Manual trigger
+  push:
+    branches: [ main ]
 
-# Set working directory
-WORKDIR /app
+jobs:
+  run-container:
+    runs-on: ubuntu-latest
 
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm install
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-# Copy the rest of the app
-COPY . .
+      - name: Pull image
+        run: docker pull mydockerhubusername/my-node-app:latest
 
-# Expose the port your app runs on (adjust if needed)
-EXPOSE 3000
-
-# Start the app
-CMD ["node", "server.js"]
+      - name: Run container
+        run: |
+          docker run -d --name my-node-app -p 3000:3000 mydockerhubusername/my-node-app:latest
+          sleep 5 # wait for server to start
+          curl http://localhost:3000
