@@ -1,15 +1,17 @@
-name: Run Node.js App from Docker Hub
+name: Run Node.js App from Docker Hub - one job
 
 on:
-  workflow_dispatch: # Manual trigger
+  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main ]    # Triggered automatically on push
 
 jobs:
   run-container:
     runs-on: ubuntu-latest
 
     steps:
+#      - name: Set up QEMU
+#        uses: docker/login-action@v3
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
